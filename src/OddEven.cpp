@@ -38,7 +38,65 @@ struct oddevennode{
 
 };
 
-int * oddeven_sll(struct oddevennode *head){
+typedef struct oddevennode *lptr;
 
+int * oddeven_sll(struct oddevennode *head){
+	int oddcnt = 0, evencnt = 0, i, j,*ptr = NULL;
+	lptr *even = NULL,*odd = NULL,tmp = NULL;
+
+	if (head == NULL)
 	return NULL;
+
+	tmp = head;
+	while (tmp != NULL){
+		if (tmp->data == 0){
+			tmp = tmp->next;
+			continue;
+		}
+
+		if (tmp->data % 2 == 0)
+			evencnt += 1;
+		else
+			oddcnt += 1;
+		tmp = tmp->next;
+	}
+
+
+
+	even = (lptr*)malloc(evencnt*sizeof(lptr));
+	odd = (lptr *)malloc(oddcnt*sizeof(lptr));
+
+	tmp = head;
+	i = j = 0;
+	while (tmp != NULL){
+		if (tmp->data % 2 == 0)
+			even[i++] = tmp;
+		else
+			odd[j++] = tmp;
+		tmp = tmp->next;
+	}
+
+	tmp = head;
+	i = j = 1;
+	while (tmp != NULL && (i <= evencnt - 1 || j <= oddcnt - 1)){
+		if (tmp->data % 2 == 0)
+			tmp->random = even[i++];
+		else
+			tmp->random = odd[j++];
+		tmp = tmp->next;
+	}
+
+	if (evencnt != 0)
+		even[evencnt - 1]->random = NULL;
+	if (oddcnt != 0)
+		odd[oddcnt - 1]->random = NULL;
+
+	ptr = (int *)malloc(2 * sizeof(int));
+	ptr[0] = ptr[1] = NULL;
+	
+	ptr[0] = oddcnt;
+	ptr[1] = evencnt;
+
+	return ptr;
+
 }
